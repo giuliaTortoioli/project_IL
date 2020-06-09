@@ -17,13 +17,10 @@ class KNNClassifier():
         with torch.no_grad():
             for images, labels in train_dataloader:
                 images = images.cuda()
-                labels = labels.cuda()
-                outputs, features = self.net(images, output = 'all')
+                features = self.net(images, output = 'features')
                 features = features.cpu()
-                outputs = outputs.cpu()
-                targets = torch.argmax(outputs, dim=1).cpu()
                 # Fit the classifier on the train_dataloader (including examplars)
-                self.classifier.fit(features, targets)
+                self.classifier.fit(features, labels)
            
     def classify(self, images):
         preds = []
